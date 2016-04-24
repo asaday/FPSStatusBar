@@ -1,0 +1,4 @@
+
+module usage {
+	header "../classes/usage.h"
+}

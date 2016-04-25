@@ -27,7 +27,8 @@ For smooth app, keep 60 frames per second !!
 you can use Cocoapods install FPSStatusBar by adding it to your Podfile
 
 ```
-pod 'FPSStatusBar', :git => 'https://github.com/asaday/FPSStatusBar.git'
+use_frameworks!
+pod 'FPSStatusBar'
 ```
 
 #### Carthage

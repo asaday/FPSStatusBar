@@ -7,20 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C347BFF91CCC961900B7152A /* FPSStatusBar.h in Headers */ = {isa = PBXBuildFile; fileRef = C347BFF71CCC961900B7152A /* FPSStatusBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C347C02B1CCC96A400B7152A /* FPSStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C347C02A1CCC96A400B7152A /* FPSStatusBar.swift */; };
-		C347C02D1CCC9BBD00B7152A /* FPSStatusBar.swift in Headers */ = {isa = PBXBuildFile; fileRef = C347C02A1CCC96A400B7152A /* FPSStatusBar.swift */; };
 		C347C02F1CCCAF1600B7152A /* usage.m in Sources */ = {isa = PBXBuildFile; fileRef = C347C02E1CCCAF1600B7152A /* usage.m */; };
+		C3E42CCB1CCDFD0300182800 /* usage.h in Headers */ = {isa = PBXBuildFile; fileRef = C347C0311CCCB1EC00B7152A /* usage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C3E42CCD1CCDFD7400182800 /* FPSStatusBar.h in Headers */ = {isa = PBXBuildFile; fileRef = C3E42CCC1CCDFD7400182800 /* FPSStatusBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C347BFEA1CCC95C000B7152A /* FPSStatusBar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FPSStatusBar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C347BFF71CCC961900B7152A /* FPSStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSStatusBar.h; sourceTree = "<group>"; };
 		C347BFF81CCC961900B7152A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C347C02A1CCC96A400B7152A /* FPSStatusBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FPSStatusBar.swift; sourceTree = "<group>"; };
 		C347C02E1CCCAF1600B7152A /* usage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = usage.m; sourceTree = "<group>"; };
 		C347C0311CCCB1EC00B7152A /* usage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = usage.h; sourceTree = "<group>"; };
-		C3B8E87D1CCD1C92002166FE /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		C3E42CCC1CCDFD7400182800 /* FPSStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSStatusBar.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,7 +36,6 @@
 		C347BFE01CCC95C000B7152A = {
 			isa = PBXGroup;
 			children = (
-				C3B8E87C1CCD1C92002166FE /* modules */,
 				C347BFF51CCC961900B7152A /* classes */,
 				C347BFF61CCC961900B7152A /* resources */,
 				C347BFEB1CCC95C000B7152A /* Products */,
@@ -55,6 +53,7 @@
 		C347BFF51CCC961900B7152A /* classes */ = {
 			isa = PBXGroup;
 			children = (
+				C3E42CCC1CCDFD7400182800 /* FPSStatusBar.h */,
 				C347C02A1CCC96A400B7152A /* FPSStatusBar.swift */,
 				C347C0311CCCB1EC00B7152A /* usage.h */,
 				C347C02E1CCCAF1600B7152A /* usage.m */,
@@ -65,18 +64,9 @@
 		C347BFF61CCC961900B7152A /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				C347BFF71CCC961900B7152A /* FPSStatusBar.h */,
 				C347BFF81CCC961900B7152A /* Info.plist */,
 			);
 			path = resources;
-			sourceTree = "<group>";
-		};
-		C3B8E87C1CCD1C92002166FE /* modules */ = {
-			isa = PBXGroup;
-			children = (
-				C3B8E87D1CCD1C92002166FE /* module.modulemap */,
-			);
-			path = modules;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,8 +76,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C347BFF91CCC961900B7152A /* FPSStatusBar.h in Headers */,
-				C347C02D1CCC9BBD00B7152A /* FPSStatusBar.swift in Headers */,
+				C3E42CCD1CCDFD7400182800 /* FPSStatusBar.h in Headers */,
+				C3E42CCB1CCDFD0300182800 /* usage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,7 +198,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = modules;
+				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -251,7 +241,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_INCLUDE_PATHS = modules;
+				SWIFT_INCLUDE_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

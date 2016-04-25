@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import usage
 
 public class FPSStatusBar: UIWindow {
 

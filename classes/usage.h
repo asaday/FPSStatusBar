@@ -10,6 +10,6 @@
 #import <mach/mach.h>
 
 float cpu_usage(int64_t *count);
-float mem_usage();
+float mem_usage(void);
 
 

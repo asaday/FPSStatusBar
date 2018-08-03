@@ -14,11 +14,11 @@ class TableViewController: UITableViewController {
 		super.viewDidLoad()
 	}
 
-	override func numberOfSections(in tableView: UITableView) -> Int {
+	override func numberOfSections(in _: UITableView) -> Int {
 		return 1
 	}
 
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
 		return 1000
 	}
 
@@ -27,7 +27,7 @@ class TableViewController: UITableViewController {
 		cell.textLabel?.text = "\(indexPath.row)"
 
 		Thread.sleep(forTimeInterval: 0.02) // waiting
-		
+
 		return cell
 	}
 }

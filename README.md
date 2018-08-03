@@ -18,7 +18,7 @@ For smooth app, keep 60 frames per second !!
 ## Requirements
 
 - iOS 8.0+
-- Xcode 8 (for swift3)
+- Xcode 9 (for swift4)
 
 ## Integration
 

@@ -13,19 +13,19 @@ open class FPSStatusBar: UIWindow {
 	open static var shared = FPSStatusBar()
 	open var interval: Int = 5
 
-	let historyLength: Int
+	var historyLength: Int = 0
 	var fpsHistory: [Int] = []
 	var cpuHistory: [Int] = []
 
 	let fpsLayer = CAShapeLayer()
 	let cpuLayer = CAShapeLayer()
-	let lbl: UILabel = UILabel()
+	let lbl = UILabel()
 
 	var internalCount: Int = 0
 	var firstMem: Float = 0
 
 	lazy var displayLink: CADisplayLink = {
-		return CADisplayLink(target: self, selector: #selector(doDisplay))
+		CADisplayLink(target: self, selector: #selector(doDisplay))
 	}()
 
 	let fpsColor = UIColor(red: 1.0, green: 0.22, blue: 0.22, alpha: 1.0)
@@ -35,8 +35,8 @@ open class FPSStatusBar: UIWindow {
 	var lastTimestamp: CFTimeInterval = 0
 	var memWarning: Int = 0
 
-	required public init?(coder aDecoder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+	public required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
 	}
 
 	open static func start() {
@@ -94,27 +94,27 @@ open class FPSStatusBar: UIWindow {
 		displayLink.isPaused = true
 		displayLink.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
 
-		NotificationCenter.default.addObserver(self, selector: #selector(notifyActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(notifyDeactive), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(NotifymemWarning), name: NSNotification.Name.UIApplicationDidReceiveMemoryWarning, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(notifyActive), name: .UIApplicationDidBecomeActive, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(notifyDeactive), name: .UIApplicationWillResignActive, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(NotifymemWarning), name: .UIApplicationDidReceiveMemoryWarning, object: nil)
 
 		firstMem = mem_usage() // its not equal instruments usage...
 	}
 
-	func notifyActive() {
+	@objc func notifyActive() {
 		displayLink.isPaused = false
 		lastTimestamp = 0
 	}
 
-	func notifyDeactive() {
+	@objc func notifyDeactive() {
 		displayLink.isPaused = true
 	}
 
-	func NotifymemWarning() {
+	@objc func NotifymemWarning() {
 		memWarning += 1
 	}
 
-	func doDisplay() {
+	@objc func doDisplay() {
 
 		if lastTimestamp == 0 {
 			lastTimestamp = displayLink.timestamp
@@ -172,9 +172,9 @@ open class FPSStatusBar: UIWindow {
 		if totalfc > 0 { avg = Int(round(1.0 / duration)) * fpsHistory.count / totalfc }
 
 		lbl.text = String(format: "%dfps %ddrops %dms | cpu %d%% %dth | %dMB %dwar",
-			avg, drop, Int(Double(drop) * duration * 1000), cpu, threadCnt,
-			Int((mem_usage() - firstMem) / (1024 * 1024)),
-			memWarning
+		                  avg, drop, Int(Double(drop) * duration * 1000), cpu, threadCnt,
+		                  Int((mem_usage() - firstMem) / (1024 * 1024)),
+		                  memWarning
 		)
 	}
 }

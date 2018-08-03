@@ -21,7 +21,7 @@ float cpu_usage(int64_t *count)
 		return -1;
 	}
 	
-	task_basic_info_t      basic_info;
+//	task_basic_info_t      basic_info;
 	thread_array_t         thread_list;
 	mach_msg_type_number_t thread_count;
 	
@@ -29,15 +29,15 @@ float cpu_usage(int64_t *count)
 	mach_msg_type_number_t thread_info_count;
 	
 	thread_basic_info_t basic_info_th;
-	uint32_t stat_thread = 0;
-	basic_info = (task_basic_info_t)tinfo;
+//	uint32_t stat_thread = 0;
+//	basic_info = (task_basic_info_t)tinfo;
 	
 	kr = task_threads(mach_task_self(), &thread_list, &thread_count);
 	if (kr != KERN_SUCCESS) {
 		return -1;
 	}
-	if (thread_count > 0)
-		stat_thread += thread_count;
+//	if (thread_count > 0)
+//		stat_thread += thread_count;
 	
 	long tot_sec = 0;
 	long tot_usec = 0;
@@ -63,7 +63,7 @@ float cpu_usage(int64_t *count)
 		
 	}
 	
-	kr = vm_deallocate(mach_task_self(), (vm_offset_t)thread_list, thread_count * sizeof(thread_t));
+//	kr = vm_deallocate(mach_task_self(), (vm_offset_t)thread_list, thread_count * sizeof(thread_t));
 	
 	if(count) *count = thread_count;
 	

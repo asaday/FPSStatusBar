@@ -8,10 +8,10 @@
 
 import UIKit
 
-public class FPSStatusBar: UIWindow {
+open class FPSStatusBar: UIWindow {
 
-	public static var sharedInstance = FPSStatusBar()
-	public var interval: Int = 5
+	open static var shared = FPSStatusBar()
+	open var interval: Int = 5
 
 	let historyLength: Int
 	var fpsHistory: [Int] = []
@@ -25,12 +25,12 @@ public class FPSStatusBar: UIWindow {
 	var firstMem: Float = 0
 
 	lazy var displayLink: CADisplayLink = {
-		return CADisplayLink(target: self, selector: #selector(display))
+		return CADisplayLink(target: self, selector: #selector(doDisplay))
 	}()
 
 	let fpsColor = UIColor(red: 1.0, green: 0.22, blue: 0.22, alpha: 1.0)
 	let cpuColor = UIColor(red: 0.27, green: 0.85, blue: 0.46, alpha: 1.0)
-	let textColor = UIColor.grayColor()
+	let textColor = UIColor.gray
 
 	var lastTimestamp: CFTimeInterval = 0
 	var memWarning: Int = 0
@@ -39,82 +39,82 @@ public class FPSStatusBar: UIWindow {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	public static func start() {
-		sharedInstance.displayLink.paused = false
+	open static func start() {
+		shared.displayLink.isPaused = false
 	}
 
-	public static func stop() {
-		sharedInstance.displayLink.paused = true
-		sharedInstance.hidden = true
+	open static func stop() {
+		shared.displayLink.isPaused = true
+		shared.isHidden = true
 	}
 
-	public static var transparent: Bool {
+	open static var transparent: Bool {
 		get {
-			return sharedInstance.backgroundColor == UIColor.clearColor()
+			return shared.backgroundColor == .clear
 		}
 		set(v) {
-			if v { sharedInstance.backgroundColor = UIColor.clearColor() }
-			else { sharedInstance.backgroundColor = UIColor.blackColor() }
+			if v { shared.backgroundColor = .clear }
+			else { shared.backgroundColor = .black }
 		}
 	}
 
 	deinit {
-		NSNotificationCenter.defaultCenter().removeObserver(self)
-		displayLink.paused = true
+		NotificationCenter.default.removeObserver(self)
+		displayLink.isPaused = true
 	}
 
 	init() {
-		let rc = UIApplication.sharedApplication().statusBarFrame
+		let rc = UIApplication.shared.statusBarFrame
 		historyLength = Int(rc.size.width)
 		super.init(frame: rc)
 
-		userInteractionEnabled = false
+		isUserInteractionEnabled = false
 
 		windowLevel = UIWindowLevelStatusBar + 1
-		backgroundColor = UIColor.blackColor()
+		backgroundColor = .black
 
-		cpuLayer.strokeColor = cpuColor.CGColor
+		cpuLayer.strokeColor = cpuColor.cgColor
 
 		cpuLayer.drawsAsynchronously = true
-		cpuLayer.fillColor = UIColor.clearColor().CGColor
+		cpuLayer.fillColor = UIColor.clear.cgColor
 		layer.addSublayer(cpuLayer)
 
-		fpsLayer.strokeColor = fpsColor.CGColor
-		fpsLayer.fillColor = UIColor.clearColor().CGColor
+		fpsLayer.strokeColor = fpsColor.cgColor
+		fpsLayer.fillColor = UIColor.clear.cgColor
 		fpsLayer.drawsAsynchronously = true
 		layer.addSublayer(fpsLayer)
 
 		lbl.frame = bounds
 		lbl.font = UIFont(name: "Courier", size: 11)
-		lbl.textColor = UIColor.grayColor()
-		lbl.textAlignment = .Center
+		lbl.textColor = .gray
+		lbl.textAlignment = .center
 		lbl.adjustsFontSizeToFitWidth = true
 		addSubview(lbl)
 
-		displayLink.paused = true
-		displayLink.addToRunLoop(NSRunLoop.currentRunLoop(), forMode: NSRunLoopCommonModes)
+		displayLink.isPaused = true
+		displayLink.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
 
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(notifyActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(notifyDeactive), name: UIApplicationWillResignActiveNotification, object: nil)
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NotifymemWarning), name: UIApplicationDidReceiveMemoryWarningNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(notifyActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(notifyDeactive), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(NotifymemWarning), name: NSNotification.Name.UIApplicationDidReceiveMemoryWarning, object: nil)
 
 		firstMem = mem_usage() // its not equal instruments usage...
 	}
 
 	func notifyActive() {
-		displayLink.paused = false
+		displayLink.isPaused = false
 		lastTimestamp = 0
 	}
 
 	func notifyDeactive() {
-		displayLink.paused = true
+		displayLink.isPaused = true
 	}
 
 	func NotifymemWarning() {
 		memWarning += 1
 	}
 
-	func display() {
+	func doDisplay() {
 
 		if lastTimestamp == 0 {
 			lastTimestamp = displayLink.timestamp
@@ -125,16 +125,16 @@ public class FPSStatusBar: UIWindow {
 		if duration == 0 { return }
 
 		// waiting keywindow set
-		if hidden && UIApplication.sharedApplication().keyWindow != nil { hidden = false }
+		if isHidden && UIApplication.shared.keyWindow != nil { isHidden = false }
 
-		if fpsHistory.count > historyLength { fpsHistory.removeAtIndex(0) }
+		if fpsHistory.count > historyLength { fpsHistory.remove(at: 0) }
 		let fps = Int(round((displayLink.timestamp - lastTimestamp) / duration))
 		fpsHistory.append(fps)
 		lastTimestamp = displayLink.timestamp
 
 		var threadCnt: Int64 = 0
 		let cpu = Int(cpu_usage(&threadCnt))
-		if cpuHistory.count > historyLength { cpuHistory.removeAtIndex(0) }
+		if cpuHistory.count > historyLength { cpuHistory.remove(at: 0) }
 		cpuHistory.append(cpu)
 
 		internalCount += 1
@@ -151,22 +151,22 @@ public class FPSStatusBar: UIWindow {
 			drop = max(drop, v - 1)
 
 			let y: CGFloat = min(bounds.size.height - 1, CGFloat((v - 1) * 5 + 1))
-			if x == 0.0 { fpspath.moveToPoint(CGPoint(x: 0, y: y)) }
-			fpspath.addLineToPoint(CGPoint(x: x, y: y))
+			if x == 0.0 { fpspath.move(to: CGPoint(x: 0, y: y)) }
+			fpspath.addLine(to: CGPoint(x: x, y: y))
 			x += 1.0
 		}
 
 		let cpupath = UIBezierPath()
-		cpupath.moveToPoint(CGPointZero)
+		cpupath.move(to: CGPoint.zero)
 		x = 0
 		for v in cpuHistory {
 			let y: CGFloat = bounds.size.height - (CGFloat(v) / 100 * bounds.size.height) - 1
-			if x == 0.0 { cpupath.moveToPoint(CGPoint(x: 0, y: y)) }
-			cpupath.addLineToPoint(CGPoint(x: x, y: y))
+			if x == 0.0 { cpupath.move(to: CGPoint(x: 0, y: y)) }
+			cpupath.addLine(to: CGPoint(x: x, y: y))
 			x += 1.0
 		}
-		fpsLayer.path = fpspath.CGPath
-		cpuLayer.path = cpupath.CGPath
+		fpsLayer.path = fpspath.cgPath
+		cpuLayer.path = cpupath.cgPath
 
 		var avg = 0
 		if totalfc > 0 { avg = Int(round(1.0 / duration)) * fpsHistory.count / totalfc }

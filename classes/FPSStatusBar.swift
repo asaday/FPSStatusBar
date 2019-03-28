@@ -86,7 +86,7 @@ open class FPSStatusBar: UIWindow {
 
 		lbl.frame = bounds
 		lbl.font = UIFont(name: "Courier", size: 11)
-		lbl.textColor = .gray
+		lbl.textColor = textColor
 		lbl.textAlignment = .center
 		lbl.adjustsFontSizeToFitWidth = true
 		addSubview(lbl)

@@ -10,7 +10,7 @@ import UIKit
 
 open class FPSStatusBar: UIWindow {
 
-	open static var shared = FPSStatusBar()
+	public static var shared = FPSStatusBar()
 	open var interval: Int = 5
 
 	var historyLength: Int = 0
@@ -39,16 +39,16 @@ open class FPSStatusBar: UIWindow {
 		super.init(coder: aDecoder)
 	}
 
-	open static func start() {
+	public static func start() {
 		shared.displayLink.isPaused = false
 	}
 
-	open static func stop() {
+	public static func stop() {
 		shared.displayLink.isPaused = true
 		shared.isHidden = true
 	}
 
-	open static var transparent: Bool {
+	public static var transparent: Bool {
 		get {
 			return shared.backgroundColor == .clear
 		}
@@ -70,7 +70,7 @@ open class FPSStatusBar: UIWindow {
 
 		isUserInteractionEnabled = false
 
-		windowLevel = UIWindowLevelStatusBar + 1
+		windowLevel = UIWindow.Level.statusBar + 1
 		backgroundColor = .black
 
 		cpuLayer.strokeColor = cpuColor.cgColor
@@ -92,11 +92,11 @@ open class FPSStatusBar: UIWindow {
 		addSubview(lbl)
 
 		displayLink.isPaused = true
-		displayLink.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
+		displayLink.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
 
-		NotificationCenter.default.addObserver(self, selector: #selector(notifyActive), name: .UIApplicationDidBecomeActive, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(notifyDeactive), name: .UIApplicationWillResignActive, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(NotifymemWarning), name: .UIApplicationDidReceiveMemoryWarning, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(notifyActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(notifyDeactive), name: UIApplication.willResignActiveNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(NotifymemWarning), name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
 
 		firstMem = mem_usage() // its not equal instruments usage...
 	}
